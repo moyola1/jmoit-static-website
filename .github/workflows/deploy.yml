@@ -6,35 +6,38 @@ on:
   #     - main
  #Run the workflow manually from the Actions tab in GitHub
   workflow_dispatch:
-# Job configuration for deploying the static website  
+ 
 
+#Permissions required for the workflow to run. The id-token permission is needed for requesting a JWT 
+#token from the OIDC provider, and the contents permission is needed for the actions/checkout action to work.
 permissions:
   id-token: write   # This is required for requesting the JWT token from the OIDC provider
   contents: read    # This is required for the actions/checkout action to work
 
+# Job configuration for deploying the static website 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    steps: 
-      - name: Checkout Repository
-        run: echo "The workflow is working!!!"
+    # steps: 
+      # - name: Checkout Repository
+      #   run: echo "The workflow is working!!!"
 
-    # steps:
+    steps:
     # - name: Checkout Repository
     #   uses: actions/checkout@v6
     
-    # - name: Set up AWS Credentials
-    #   uses: aws-actions/configure-aws-credentials@v6.0.0
-    #   with:
-    #     role-to-assume: ${{ secrets.IAM_ROLE }}
-    #     aws-region: ${{ secrets.AWS_REGION }}
+    - name: Set up AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v6
+      with:
+        role-to-assume: ${{ secrets.IAM_ROLE }}
+        aws-region: ${{ secrets.AWS_REGION }}
 
-    # - name: List S3 Buckets
-    #   env:
-    #     AWS_REGION: ${{ secrets.AWS_REGION }}
-    #   run: |
-    #     echo "Listing S3 buckets..."
-    #     aws s3 ls
+    - name: List S3 Buckets
+      env:
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+      run: |
+        echo "Listing S3 buckets..."
+        aws s3 ls
 
       # - name: Checkout Repository
       #   uses: actions/checkout@v3
