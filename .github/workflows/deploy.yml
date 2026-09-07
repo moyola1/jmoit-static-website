@@ -51,3 +51,12 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve -var="bucket_name=${{ env.AWS_BUCKET_NAME }}"
         working-directory: terraform
+      
+      - name: Upload Website Files to S3
+        run: |
+          aws s3 cp --recursive css s3://${{ env.AWS_BUCKET_NAME }}/css/
+          aws s3 cp --recursive fontawesome s3://${{ env.AWS_BUCKET_NAME }}/fontawesome/
+          aws s3 cp --recursive img s3://${{ env.AWS_BUCKET_NAME }}/img/
+          aws s3 cp --recursive js s3://${{ env.AWS_BUCKET_NAME }}/js/
+          aws s3 cp --recursive video s3://${{ env.AWS_BUCKET_NAME }}/video/
+          aws s3 cp index.html s3://${{ env.AWS_BUCKET_NAME }}/index.html
