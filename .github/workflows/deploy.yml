@@ -7,10 +7,10 @@ on:
  #Run the workflow manually from the Actions tab in GitHub
   workflow_dispatch:
  
-env:
-  AWS_REGION: ${{ secrets.AWS_REGION }}
-  AWS_IAM_ROLE: ${{ secrets.IAM_ROLE }}
-  # S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+# env:
+#   AWS_REGION: ${{ secrets.AWS_REGION }}
+#   AWS_IAM_ROLE: ${{ secrets.IAM_ROLE }}
+#   # S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
 
 # Permissions required for the workflow to run. The id-token permission is needed for requesting a JWT 
 # token from the OIDC provider, and the contents permission is needed for the actions/checkout action to work.
@@ -27,18 +27,18 @@ jobs:
       #   run: echo "The workflow is working!!!"
 
     steps:
-    # - name: Checkout Repository
-    #   uses: actions/checkout@v6
+    - name: Checkout Repository
+      uses: actions/checkout@v6
     
     - name: Set up AWS Credentials
       uses: aws-actions/configure-aws-credentials@v6
       with:
-        role-to-assume: ${{ env.AWS_IAM_ROLE }}
-        aws-region: ${{ env.AWS_REGION }}
+        role-to-assume: ${{ secrets.IAM_ROLE }}
+        aws-region: ${{ secrets.AWS_REGION }}
 
     - name: List S3 Buckets
       env:
-        AWS_REGION: ${{ env.AWS_REGION }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
       run: |
         echo "Listing S3 buckets..."
         aws s3 ls
