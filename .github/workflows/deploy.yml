@@ -1,64 +1,31 @@
-name: Deploy
-# This workflow deploys a static website to GitHub Pages whenever changes are pushed to the main branch.
+name: Deploy Workflow
+
 on:
-  # push:
-  #   branches:
-  #     - main
- #Run the workflow manually from the Actions tab in GitHub
+#  push:
+#    branches:
+#      - main
   workflow_dispatch:
- 
-# env:
-#   AWS_REGION: ${{ secrets.AWS_REGION }}
-#   AWS_IAM_ROLE: ${{ secrets.IAM_ROLE }}
-#   # S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
 
-# Permissions required for the workflow to run. The id-token permission is needed for requesting a JWT 
-# token from the OIDC provider, and the contents permission is needed for the actions/checkout action to work.
 permissions:
-  id-token: write   # This is required for requesting the JWT token from the OIDC provider
-  contents: read    # This is required for the actions/checkout action to work
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
 
-# Job configuration for deploying the static website 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    # steps: 
-      # - name: Checkout Repository
-      #   run: echo "The workflow is working!!!"
-
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v6
-    
-    - name: Set up AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v6
-      with:
-        role-to-assume: ${{ secrets.IAM_ROLE }}
-        aws-region: ${{ secrets.AWS_REGION }}
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+        
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v6.0.0
+        with:
+          role-to-assume: ${{ secrets.IAM_ROLE }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-    - name: List S3 Buckets
-      env:
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-      run: |
-        echo "Listing S3 buckets..."
-        aws s3 ls
-
-      # - name: Checkout Repository
-      #   uses: actions/checkout@v3
-
-      # - name: Set up Node.js
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: '16'
-
-      # - name: Install Dependencies
-      #   run: npm install
-
-      # - name: Build Project
-      #   run: npm run build
-
-      # - name: Deploy to GitHub Pages
-      #   uses: peaceiris/actions-gh-pages@v3
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     publish_dir: ./dist
+      - name: List S3 Buckets
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          echo "Listing S3 buckets..."
+            aws s3 ls
