@@ -9,6 +9,7 @@ on:
  
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_IAM_ROLE: ${{ secrets.IAM_ROLE }}
   # S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
 
 # Permissions required for the workflow to run. The id-token permission is needed for requesting a JWT 
@@ -32,12 +33,12 @@ jobs:
     - name: Set up AWS Credentials
       uses: aws-actions/configure-aws-credentials@v6
       with:
-        role-to-assume: ${{ secrets.IAM_ROLE }}
-        aws-region: ${{ secrets.AWS_REGION }}
+        role-to-assume: ${{ env.AWS_IAM_ROLE }}
+        aws-region: ${{ env.AWS_REGION }}
 
     - name: List S3 Buckets
       env:
-        AWS_REGION: ${{ secrets.AWS_REGION }}
+        AWS_REGION: ${{ env.AWS_REGION }}
       run: |
         echo "Listing S3 buckets..."
         aws s3 ls
