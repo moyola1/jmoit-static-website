@@ -18,7 +18,6 @@ resource "aws_s3_bucket" "jmoit-static-website" {
 #     key = "error.html"
 #   }
 # }
-
 resource "aws_s3_bucket_public_access_block" "jmoit-static-website" {
   bucket = aws_s3_bucket.jmoit-static-website.id
 
@@ -44,4 +43,19 @@ resource "aws_s3_bucket_public_access_block" "jmoit-static-website" {
 
 #   depends_on = [aws_s3_bucket_public_access_block.jmoit-static-website]
 # }
+resource "aws_acm_certificate" "jmoit-static-website-cert" {
+  domain_name       = var.domain_name
+  validation_method = "DNS"
 
+  subject_alternative_names = [
+    "*.${var.domain_name}"
+  ]
+  tags = {
+    Name        = "jmoit-static-website SSL Certificate"
+    Environment = "Dev"
+  }
+  # Lifecycle block to ensure the certificate is created before being destroyed
+  lifecycle {
+    create_before_destroy = true
+  }
+}
