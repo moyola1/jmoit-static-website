@@ -35,6 +35,10 @@ jobs:
           aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
           #role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
+      
+      - name: Empty S3 Bucket
+        run: |
+          aws s3 rm --recursive s3://${{ env.AWS_BUCKET_NAME }}
 
       - name: Install Terraform
       # Terraform setup action: https://github.com/hashicorp/setup-terraform
