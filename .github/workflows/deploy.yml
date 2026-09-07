@@ -7,9 +7,12 @@ on:
  #Run the workflow manually from the Actions tab in GitHub
   workflow_dispatch:
  
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  # S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
 
-#Permissions required for the workflow to run. The id-token permission is needed for requesting a JWT 
-#token from the OIDC provider, and the contents permission is needed for the actions/checkout action to work.
+# Permissions required for the workflow to run. The id-token permission is needed for requesting a JWT 
+# token from the OIDC provider, and the contents permission is needed for the actions/checkout action to work.
 permissions:
   id-token: write   # This is required for requesting the JWT token from the OIDC provider
   contents: read    # This is required for the actions/checkout action to work
@@ -27,7 +30,7 @@ jobs:
     #   uses: actions/checkout@v6
     
     - name: Set up AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v4
+      uses: aws-actions/configure-aws-credentials@v6
       with:
         role-to-assume: ${{ secrets.IAM_ROLE }}
         aws-region: ${{ secrets.AWS_REGION }}
