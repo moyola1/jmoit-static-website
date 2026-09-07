@@ -36,21 +36,21 @@ jobs:
           #role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
-      # - name: Install Terraform
-      # # Terraform setup action: https://github.com/hashicorp/setup-terraform
-      #   uses: hashicorp/setup-terraform@v4
+      - name: Install Terraform
+      # Terraform setup action: https://github.com/hashicorp/setup-terraform
+        uses: hashicorp/setup-terraform@v4
   
-      # - name: Terraform Initialization
-      #   run: terraform init
-      #   working-directory: terraform
+      - name: Terraform Initialization
+        run: terraform init
+        working-directory: terraform
 
-      # - name: Terraform Plan
-      #   run: terraform plan
-      #   working-directory: terraform
+      - name: Terraform Plan
+        run: terraform plan
+        working-directory: terraform
 
-      # - name: Terraform Apply
-      #   run: terraform apply -auto-approve
-      #   working-directory: terraform
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        working-directory: terraform
 
       # List S3 Buckets
       - name: List S3 Buckets
