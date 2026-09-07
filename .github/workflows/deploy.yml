@@ -6,6 +6,14 @@ on:
 #      - main
   workflow_dispatch:
 
+env:
+  # These secrets are set in github.com > Settings > Secrets & Variables > Actions.
+  # Create your secrets there, then they're loaded in here and used below in the steps section.    
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
+  AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
+
 # permissions:
 #   id-token: write   # This is required for requesting the JWT
 #   contents: read    # This is required for actions/checkout
@@ -14,20 +22,38 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      # Checkout code to the runner (ubuntu-latest) so that we can run Terraform commands on it.
+      # Checkout action: https://github.com/marketplace/actions/checkout
       - name: Checkout Repository
         uses: actions/checkout@v6
-        
+
+      # AWS credentials action: https://github.com/marketplace/actions/configure-aws-credentials
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v6.0.0
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
           #role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ env.AWS_REGION }}
 
+      # - name: Install Terraform
+      # # Terraform setup action: https://github.com/hashicorp/setup-terraform
+      #   uses: hashicorp/setup-terraform@v4
+  
+      # - name: Terraform Initialization
+      #   run: terraform init
+      #   working-directory: terraform
+
+      # - name: Terraform Plan
+      #   run: terraform plan
+      #   working-directory: terraform
+
+      # - name: Terraform Apply
+      #   run: terraform apply -auto-approve
+      #   working-directory: terraform
+
+      # List S3 Buckets
       - name: List S3 Buckets
-        env:
-          AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
           echo "Listing S3 buckets..."
-            aws s3 ls
+            aws s3 ls ${{env.AWS_BUCKET_NAME}}
