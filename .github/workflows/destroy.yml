@@ -1,4 +1,4 @@
-name: Deploy Workflow
+name: Destroy Workflow
 
 on:
 #  push:
@@ -19,7 +19,7 @@ env:
 #   contents: read    # This is required for actions/checkout
 
 jobs:
-  deploy:
+  destroy:
     runs-on: ubuntu-latest
     steps:
       # Checkout code to the runner (ubuntu-latest) so that we can run Terraform commands on it.
@@ -45,9 +45,9 @@ jobs:
         working-directory: terraform
 
       - name: Terraform Plan
-        run: terraform plan -var="bucket_name=${{ env.AWS_BUCKET_NAME }}"
+        run: terraform plan -destroy -var="bucket_name=${{ env.AWS_BUCKET_NAME }}"
         working-directory: terraform
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve -var="bucket_name=${{ env.AWS_BUCKET_NAME }}"
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve -var="bucket_name=${{ env.AWS_BUCKET_NAME }}"
         working-directory: terraform
