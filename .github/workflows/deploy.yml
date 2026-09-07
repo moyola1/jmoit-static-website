@@ -56,4 +56,4 @@ jobs:
       - name: List S3 Buckets
         run: |
           echo "Listing S3 buckets..."
-            aws s3 ls s3://${{env.AWS_BUCKET_NAME}}
+            aws s3 ls 
