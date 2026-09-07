@@ -51,7 +51,7 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve -var="bucket_name=${{ env.AWS_BUCKET_NAME }}"
         working-directory: terraform
-      
+      # S3 Bucket does not allow to copy empty folders, so we need to create a .keep file in each folder to ensure they are copied to S3.
       - name: Upload Website Files to S3
         run: |
           aws s3 cp --recursive css s3://${{ env.AWS_BUCKET_NAME }}/css/
