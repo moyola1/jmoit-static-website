@@ -62,6 +62,9 @@ resource "aws_acm_certificate" "jmoit-static-website" {
   }
 }
 
+data "aws_route53_record" "jmoit-static-website" {
+  name         = "jmoitsvrs.link"
+}
 resource "aws_route53_record" "jmoit-static-website-validation" {
   # "dvo" stands for "Domain Validation Options"
   for_each = {
