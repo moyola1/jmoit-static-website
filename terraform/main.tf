@@ -61,3 +61,25 @@ resource "aws_acm_certificate" "jmoit-static-website" {
     create_before_destroy = true
   }
 }
+
+resource "aws_route53_record" "jmoit-static-website-validation" {
+  # "dvo" stands for "Domain Validation Options"
+  for_each = {
+    for dvo in aws_acm_certificate.jmoit-static-website.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      type   = dvo.resource_record_type
+      record = dvo.resource_record_value
+    }
+  }
+  
+  name    = each.value.name
+  ttl     = 60
+  type    = each.value.type
+  zone_id = data.aws_route53_zone.jmoit-static-website.zone_id
+  records = [each.value.record]
+}
+
+resource "aws_acm_certificate_validation" "jmoit-static-website-validation" {
+  certificate_arn         = aws_acm_certificate.jmoit-static-website.arn
+  validation_record_fqdns = [for record in aws_route53_record.jmoit-static-website-validation : record.fqdn]
+}
