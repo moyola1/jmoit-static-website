@@ -62,7 +62,7 @@ resource "aws_acm_certificate" "jmoit-static-website" {
   }
 }
 
-data "aws_route53_record" "jmoit-static-website" {
+data "aws_route53_record" "jmoit-static-website-record" {
   name         = "jmoitsvrs.link"
 }
 resource "aws_route53_record" "jmoit-static-website-validation" {
@@ -78,7 +78,7 @@ resource "aws_route53_record" "jmoit-static-website-validation" {
   name    = each.value.name
   ttl     = 60
   type    = each.value.type
-  zone_id = data.aws_route53_zone.jmoit-static-website.zone_id
+  zone_id = data.aws_route53_record.jmoit-static-website-record.zone_id
   records = [each.value.record]
 }
 
