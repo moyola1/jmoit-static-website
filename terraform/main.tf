@@ -78,7 +78,7 @@ resource "aws_route53_record" "jmoit-static-website-validation" {
   name    = each.value.name
   ttl     = 60
   type    = each.value.type
-  zone_id = data.aws_route53_record.jmoit-static-website-record.zone_id
+  zone_id = data.aws_route53_zone.jmoit-static-website-zone.id
   records = [each.value.record]
 }
 
