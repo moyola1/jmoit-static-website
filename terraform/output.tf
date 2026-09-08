@@ -1,3 +1,3 @@
 output "bucket-name" {
-  value = aws_s3_bucket.jmoit-static-website.bucket_namespace
+  value = aws_s3_bucket.jmoit-static-website.bucket
 }

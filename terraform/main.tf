@@ -43,3 +43,21 @@ resource "aws_s3_bucket_public_access_block" "jmoit-static-website" {
 
 #   depends_on = [aws_s3_bucket_public_access_block.jmoit-static-website]
 # }
+
+resource "aws_acm_certificate" "jmoit-static-website" {
+  domain_name       = "jmoitsvrs.link"
+  validation_method = "DNS"
+  
+  subject_alternative_names = [
+    "www.jmoitsvrs.link"
+  ]
+
+  tags = {
+    Name        = "jmoit-static-website"
+    Environment = "Dev"
+  }
+  # Lifecycle block to ensure the certificate is created before any resources that depend on it are destroyed
+  lifecycle {
+    create_before_destroy = true
+  }
+}
