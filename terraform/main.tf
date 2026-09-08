@@ -62,7 +62,7 @@ resource "aws_acm_certificate" "jmoit-static-website" {
   }
 }
 
-data "aws_route53_record" "jmoit-static-website-record" {
+data "aws_route53_zone" "jmoit-static-website-zone" {
   name         = "jmoitsvrs.link"
 }
 resource "aws_route53_record" "jmoit-static-website-validation" {
