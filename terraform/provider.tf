@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-east-1"  # To use ACM with CloudFront
+  region = "us-east-1" # To use ACM with CloudFront
 }
 
 terraform {
