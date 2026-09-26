@@ -39,9 +39,9 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           role-to-assume: ${{ env.AWS_IAM_ROLE_ARN }}
       
-      - name: Empty S3 Bucket
-        run: |
-          aws s3 rm --recursive s3://${{ env.AWS_BUCKET_NAME }}
+      # - name: Empty S3 Bucket
+      #   run: |
+      #     aws s3 rm --recursive s3://${{ env.AWS_BUCKET_NAME }}
 
       - name: Install Terraform
       # Terraform setup action: https://github.com/hashicorp/setup-terraform

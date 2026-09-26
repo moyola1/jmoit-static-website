@@ -1,7 +1,7 @@
 # Terraform configuration for AWS S3 bucket and ACM certificate
 resource "aws_s3_bucket" "jmoit-static-website" {
   bucket = var.bucket_name
-  #force_destroy = true
+  force_destroy = true
   tags = {
     Name        = "jmoit-static-website"
     Environment = "Dev"
