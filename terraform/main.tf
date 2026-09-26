@@ -21,7 +21,8 @@ resource "aws_s3_bucket_public_access_block" "jmoit-static-website" {
 resource "aws_acm_certificate" "jmoit-static-website" {
   domain_name       = "jmoitsvrs.link"
   validation_method = "DNS"
-  # The subject alternative names (SANs) allow the certificate to cover multiple domains or subdomains. In this case, it includes the "www" subdomain of "jmoitsvrs.link".
+  # The subject alternative names (SANs) allow the certificate to cover multiple 
+  # domains or subdomains. In this case, it includes the "www" subdomain of "jmoitsvrs.link".
   subject_alternative_names = [
     "www.jmoitsvrs.link"
   ]
